@@ -35,7 +35,7 @@ export default function RoutesManagement() {
         try {
             const email = localStorage.getItem("email");
             if (!email) return;
-            const { data } = await axios.get(`http://localhost:8000/api/wallet/${email}`);
+            const { data } = await axios.get(`https://shuttle-backend.vercel.app/api/wallet/${email}`);
             setWalletBalance(data.wallet_balance);
         } catch (error) {
             console.error("Error fetching wallet balance:", error);
@@ -49,7 +49,7 @@ export default function RoutesManagement() {
 
     const fetchRoutes = async () => {
         try {
-            const { data } = await axios.get<Route[]>("http://localhost:8000/api/routes");
+            const { data } = await axios.get<Route[]>("https://shuttle-backend.vercel.app/api/routes");
             setRoutes(data);
         } catch (error) {
             console.error("Error fetching routes:", error);
@@ -66,7 +66,7 @@ export default function RoutesManagement() {
         };
 
         try {
-            await axios.post("http://localhost:8000/api/routes", processedData);
+            await axios.post("https://shuttle-backend.vercel.app/api/routes", processedData);
             fetchRoutes();
             reset();
         } catch (error) {
@@ -77,7 +77,7 @@ export default function RoutesManagement() {
     const deleteRoute = async (id?: string) => {
         if (!id) return;
         try {
-            await axios.delete(`http://localhost:8000/api/routes/${id}`);
+            await axios.delete(`https://shuttle-backend.vercel.app/api/routes/${id}`);
             fetchRoutes();
         } catch (error) {
             console.error("Error deleting route:", error);
@@ -98,7 +98,7 @@ export default function RoutesManagement() {
                 alert("Please log in to book a ride.");
                 return;
             }
-            const { data } = await axios.post("http://localhost:8000/api/book-ride", { email, routeId });
+            const { data } = await axios.post("https://shuttle-backend.vercel.app/api/book-ride", { email, routeId });
             alert(data.message);
         } catch (error) {
             console.error("Error booking ride:", error);
@@ -229,6 +229,7 @@ export default function RoutesManagement() {
         text-align: center;
         font-size: 1.5rem;
         margin-top: 20px;
+        margin-bottom: 100px;
         color: var(--primary-color);
     }
 

@@ -29,7 +29,7 @@ export default function Bookings() {
         try {
             const email = localStorage.getItem("email");
             if (!email) return;
-            const { data } = await axios.get(`http://localhost:8000/api/wallet/${email}`);
+            const { data } = await axios.get(`https://shuttle-backend.vercel.app/api/wallet/${email}`);
             setWalletBalance(data.wallet_balance);
         } catch (error) {
             console.error("Error fetching wallet balance:", error);
@@ -40,7 +40,7 @@ export default function Bookings() {
         try {
             const email = localStorage.getItem("email");
             if (!email) return;
-            const { data } = await axios.get<Booking[]>(`http://localhost:8000/api/bookings/${email}`);
+            const { data } = await axios.get<Booking[]>(`https://shuttle-backend.vercel.app/api/bookings/${email}`);
             setBookings(data);
         } catch (error) {
             console.error("Error fetching bookings:", error);

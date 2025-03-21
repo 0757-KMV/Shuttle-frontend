@@ -20,7 +20,7 @@ export default function WalletPage() {
 
     const fetchWalletBalance = async (email: string) => {
         try {
-            const { data } = await axios.get(`http://localhost:8000/api/wallet/${email}`);
+            const { data } = await axios.get(`https://shuttle-backend.vercel.app/api/wallet/${email}`);
             setWalletBalance(data.wallet_balance);
         } catch (error) {
             console.error("Error fetching wallet balance:", error);
@@ -37,7 +37,7 @@ export default function WalletPage() {
                 return;
             }
 
-            const { data } = await axios.put(`http://localhost:8000/api/wallet/recharge/${userEmail}`, { amount });
+            const { data } = await axios.put(`https://shuttle-backend.vercel.app/api/wallet/recharge/${userEmail}`, { amount });
             setWalletBalance(data.new_balance);
             setRechargeAmount("");
             alert("Wallet recharged successfully!");
