@@ -1,26 +1,271 @@
-@import "tailwindcss";
-
+/* 🔹 Root Variables for Colors */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --text-color: #333;
+  --primary-color: #007bff;
+  --danger-color: #dc3545;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* 🔹 Global Styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔹 Routes Container */
+.routes-container {
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* margin: 0 auto; */
+  /* padding: 30px; */
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 5px 10px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+/* 🔹 Title */
+.routes-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+/* 🔹 Form */
+.routes-form {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 25px;
+  border-radius: 8px;
+  background: #fdfdfd;
+  box-shadow: 0 3px 6px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+/* 🔹 Inputs */
+.routes-input,
+.routes-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 16px;
+  background: #fff;
+  transition: 0.2s ease-in-out;
+}
+
+.routes-input:focus,
+.routes-select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* 🔹 Button */
+.routes-button {
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.routes-button:hover {
+  background-color: #0056b3;
+}
+
+/* 🔹 Routes List */
+.routes-list {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+}
+
+/* 🔹 Route Card */
+.routes-card {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 6px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+/* 🔹 Card Title */
+.routes-card-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+/* 🔹 Card Text */
+.routes-card-text {
+  font-size: 15px;
+  color: var(--text-color);
+}
+
+/* 🔹 Delete Button */
+.routes-delete-button {
+  background-color: var(--danger-color);
+  color: #fff;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+  align-self: flex-end;
+}
+
+.routes-delete-button:hover {
+  background-color: #a71d2a;
+}
+
+/* 🔹 Centering and full-page background */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #f0f2f5, #d9e4f5);
+}
+
+/* 🔹 Login Box */
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 380px;
+  text-align: center;
+}
+
+/* 🔹 Login Title */
+.login-title {
+  font-size: 24px;
+  color: var(--text-color);
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* 🔹 Input Fields */
+.login-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* 🔹 Login Button */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-button:hover {
+  background: #357ae8;
+}
+
+/* 🔹 Error Message */
+.login-error {
+  color: red;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+/* 🔹 Header Styling */
+.routes-header {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  /* border-radius: 8px; */
+
+  width: 100%;
+}
+
+.routes-header-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.routes-header-subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* 🔹 Navigation Bar */
+.routes-nav {
+  background: #333;
+  width: 100%;
+  padding: 12px 0;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.routes-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.routes-nav ul li {
+  display: inline;
+}
+
+.routes-nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.routes-nav ul li a:hover {
+  background: #555;
 }
