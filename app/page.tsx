@@ -35,7 +35,7 @@ export default function RoutesManagement() {
         try {
             const email = localStorage.getItem("email");
             if (!email) return;
-            const { data } = await axios.get(`https://shuttle-backend.vercel.app/api/wallet/${email}`);
+            const { data } = await axios.get(`http://localhost:8000/api/wallet/${email}`);
             setWalletBalance(data.wallet_balance);
         } catch (error) {
             console.error("Error fetching wallet balance:", error);
@@ -49,7 +49,7 @@ export default function RoutesManagement() {
 
     const fetchRoutes = async () => {
         try {
-            const { data } = await axios.get<Route[]>("https://shuttle-backend.vercel.app/api/routes");
+            const { data } = await axios.get<Route[]>("http://localhost:8000/api/routes");
             setRoutes(data);
         } catch (error) {
             console.error("Error fetching routes:", error);
@@ -66,7 +66,7 @@ export default function RoutesManagement() {
         };
 
         try {
-            await axios.post("https://shuttle-backend.vercel.app/api/routes", processedData);
+            await axios.post("http://localhost:8000/api/routes", processedData);
             fetchRoutes();
             reset();
         } catch (error) {
@@ -77,7 +77,7 @@ export default function RoutesManagement() {
     const deleteRoute = async (id?: string) => {
         if (!id) return;
         try {
-            await axios.delete(`https://shuttle-backend.vercel.app/api/routes/${id}`);
+            await axios.delete(`http://localhost:8000/api/routes/${id}`);
             fetchRoutes();
         } catch (error) {
             console.error("Error deleting route:", error);
@@ -98,12 +98,14 @@ export default function RoutesManagement() {
                 alert("Please log in to book a ride.");
                 return;
             }
-            const { data } = await axios.post("https://shuttle-backend.vercel.app/api/book-ride", { email, routeId });
-            alert(data.message);
-        } catch (error) {
-            console.error("Error booking ride:", error);
+            const { data } = await axios.post("http://localhost:8000/api/book-ride", { email, routeId });
+            alert(`Ride booked successfully! Fare: ₹${data.fare}`);
+            setWalletBalance(data.new_balance);
+        } catch (error: any) {
+            alert(error.response?.data?.detail || "Error booking ride.");
         }
     };
+    
 
     return (
         <div className="routes-container">
@@ -172,192 +174,243 @@ export default function RoutesManagement() {
 
             <style jsx>{`
     :root {
-        --primary-color: #2c3e50;  /* Dark Blue */
-        --secondary-color: #4a6670; /* Muted Blue-Green */
-        --background-light: #f4f7f9; /* Light Gray */
-        --background-dark: #e8ecef; /* Slightly Darker Gray */
-        --text-color: #333; /* Dark Gray */
-        --highlight-color: #007bff; /* Subtle Blue */
-        --button-hover: #0056b3; /* Darker Blue */
-        --danger-color: #d9534f; /* Professional Red */
-    }
+    --primary-color: #57B4BA;  /* Vibrant Cyan */
+    --secondary-color: #8AB2A6; /* Soft Green */
+    --background-light: #f4f7f9; /* Light Gray */
+    --background-dark: #e8ecef; /* Slightly Darker Gray */
+    --text-color: #333; /* Dark Gray */
+    --highlight-color: #57B4BA; /* Primary Theme Color */
+    --button-hover: #4699A0; /* Slightly Darker Cyan */
+    --danger-color: #d9534f; /* Professional Red */
+}
 
-    .routes-container {
-        padding: 20px;
-        font-family: 'Inter', sans-serif;
-        color: var(--text-color);
-        background: var(--background-light);
-        min-height: 100vh;
-    }
+.routes-container {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background: var(--background-light);
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
 
-    .routes-header {
-        text-align: center;
-        margin-bottom: 20px;
-        background: var(--primary-color);
-        color: white;
-        padding: 20px;
-        border-radius: 5px;
-    }
+/* 📌 Header */
+.routes-header {
+    text-align: center;
+    padding: 20px;
+    background: #A5B68D;
+    color: white;
+    border-bottom: 4px solid var(--secondary-color);
+}
 
-    .routes-header-title {
-        font-size: 2rem;
-        font-weight: 600;
-    }
+.routes-header-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin: 0;
+}
 
+.routes-header-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.8;
+}
+
+/* 📌 Navbar */
+.routes-nav {
+    background: #A5B68D;
+    padding: 12px 0;
+}
+
+.routes-nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.routes-nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease-in-out;
+}
+
+.routes-nav ul li a:hover {
+    color: var(--highlight-color);
+}
+
+/* 📌 Page Title */
+.routes-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-top: 30px;
+    color: black;
+}
+
+/* 📌 Form */
+.routes-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 30px auto;
+    gap: 15px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.routes-input,
+.routes-select {
+    padding: 12px;
+    border: 1px solid var(--background-dark);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* 📌 Buttons */
+.routes-button {
+    background: var(--highlight-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background 0.3s ease-in-out;
+}
+
+.routes-button:hover {
+    background: var(--button-hover);
+}
+
+.routes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    list-style: none;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.routes-card {
+    background: linear-gradient(135deg, #f9f9f9, #e6e6e6);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-left: 5px solid #57B4BA;
+}
+
+.routes-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.routes-card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.routes-card-text {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.routes-book-button,
+.routes-delete-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.routes-book-button {
+    background:  #A5B68D;
+    color: white;
+}
+
+.routes-book-button:hover {
+    background:  #A5B68D;
+    transform: scale(1.05);
+}
+
+.routes-delete-button {
+    background: #dc3545;
+    color: white;
+}
+
+.routes-delete-button:hover {
+    background: #c82333;
+    transform: scale(1.05);
+}
+
+
+/* 📌 Profile Menu */
+.profile-menu {
+    position: relative;
+    cursor: pointer;
+    color: white;
+    font-size: 1rem;
+}
+
+.dropdown {
+    position: absolute;
+    background: white;
+    color: var(--text-color);
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+    top: 40px;
+    right: 0;
+    min-width: 150px;
+    z-index:1000;
+}
+
+/* 📌 Logout Button */
+.logout-button {
+    background: #A5B68D;
+    color: black;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background 0.3s ease-in-out;
+}
+
+.logout-button:hover {
+    background:  #4699A0;
+}
+
+/* 📌 Responsive Design */
+@media (max-width: 768px) {
     .routes-nav ul {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        list-style: none;
-        padding: 10px;
-        background: var(--secondary-color);
-        border-radius: 5px;
-    }
-
-    .routes-nav ul li a {
-        text-decoration: none;
-        color: white;
-        font-weight: 500;
-        transition: color 0.3s;
-    }
-
-    .routes-nav ul li a:hover {
-        color: var(--highlight-color);
-    }
-
-    .routes-title {
-        text-align: center;
-        font-size: 1.5rem;
-        margin-top: 20px;
-        margin-bottom: 100px;
-        color: var(--primary-color);
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
     }
 
     .routes-form {
-        display: flex;
-        flex-direction: column;
-        max-width: 500px;
-        margin: 20px auto;
-        gap: 10px;
-        background: white;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .routes-input,
-    .routes-select {
-        padding: 10px;
-        border: 1px solid var(--background-dark);
-        border-radius: 4px;
-        font-size: 1rem;
-    }
-
-    .routes-button {
-        background: var(--highlight-color);
-        color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-        border-radius: 4px;
-        font-size: 1rem;
-        transition: background 0.3s;
-    }
-
-    .routes-button:hover {
-        background: var(--button-hover);
+        width: 90%;
     }
 
     .routes-list {
-        list-style: none;
-        max-width: 800px;
-        margin: auto;
-        padding: 0;
+        width: 90%;
     }
+}
 
-    .routes-card {
-        padding: 15px;
-        border: 1px solid var(--background-dark);
-        border-radius: 5px;
-        margin-bottom: 15px;
-        background: white;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .routes-card-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: var(--primary-color);
-    }
-
-    .routes-card-text {
-        font-size: 0.95rem;
-        color: var(--text-color);
-    }
-
-    .routes-book-button {
-        background: var(--highlight-color);
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        cursor: pointer;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        transition: background 0.3s;
-    }
-
-    .routes-book-button:hover {
-        background: var(--button-hover);
-    }
-
-    .routes-delete-button {
-        background: var(--danger-color);
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        cursor: pointer;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        transition: background 0.3s;
-    }
-
-    .routes-delete-button:hover {
-        background: #c9302c;
-    }
-
-    .profile-menu {
-        position: relative;
-        cursor: pointer;
-        color: white;
-    }
-
-    .dropdown {
-        position: absolute;
-        background: white;
-        color: var(--text-color);
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        top: 30px;
-        right: 0;
-    }
-
-    .logout-button {
-        background: var(--danger-color);
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 3px;
-        margin-top: 5px;
-    }
-
-    .logout-button:hover {
-        background: #c9302c;
-    }
 `}</style>
 
         </div>

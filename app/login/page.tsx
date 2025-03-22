@@ -23,11 +23,13 @@ export default function AuthPage() {
         const body = isRegister ? { email, name, password } : { email, password };
         console.log("Sending body:", body);
     
-        const response = await fetch(`http://127.0.0.1:8000${url}`, {
+        const response = await fetch(`http://localhost:8000${url}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
+            mode: "cors",  // ✅ Ensure CORS mode is enabled
         });
+        
     
         const data = await response.json();
         console.log("Response data:", data);
@@ -89,73 +91,123 @@ export default function AuthPage() {
             </div>
 
             <style jsx>{`
-                .login-container {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    background: linear-gradient(to right, #f0f2f5, #d9e4f5);
-                }
+                :root {
+    --primary-color: #57B4BA; /* Vibrant Cyan */
+    --secondary-color: #8AB2A6; /* Soft Green */
+    --background-light: #f4f7f9; /* Light Gray */
+    --background-dark: #e8ecef; /* Slightly Darker Gray */
+    --text-color: #333; /* Dark Gray */
+    --highlight-color: #57B4BA; /* Primary Theme Color */
+    --button-hover: #4699A0; /* Slightly Darker Cyan */
+    --danger-color: #d9534f; /* Professional Red */
+}
 
-                .login-box {
-                    background: white;
-                    padding: 2rem;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                    width: 350px;
-                    text-align: center;
-                }
+/* 📌 Page Container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--background-light);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+}
 
-                .login-title {
-                    font-size: 1.8rem;
-                    color: #333;
-                    margin-bottom: 1rem;
-                }
+/* 📌 Login/Register Box */
+.login-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+    border-left: 5px solid  #A5B68D;;
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+}
 
-                .login-input {
-                    width: 100%;
-                    padding: 10px;
-                    margin-bottom: 1rem;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                    font-size: 1rem;
-                }
+.login-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
 
-                .login-button {
-                    width: 100%;
-                    padding: 10px;
-                    background: #007bff;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    font-size: 1rem;
-                    cursor: pointer;
-                    transition: 0.3s;
-                }
+/* 📌 Title */
+.login-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
 
-                .login-button:hover {
-                    background: #0056b3;
-                }
+/* 📌 Input Fields */
+.login-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
 
-                .toggle {
-                    margin-top: 10px;
-                    color: #007bff;
-                    cursor: pointer;
-                }
+.login-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
 
-                .toggle:hover {
-                    text-decoration: underline;
-                }
+/* 📌 Buttons */
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background:  #A5B68D;;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.1s ease-in-out;
+}
 
-                .login-message {
-                    margin-top: 10px;
-                    color: green;
-                }
+.login-button:hover {
+    background:  #A5B68D;;
+    transform: scale(1.05);
+}
 
-                .wallet {
-                    margin-top: 10px;
-                    font-weight: bold;
-                }
+/* 📌 Toggle (Switch between Login/Register) */
+.toggle {
+    margin-top: 15px;
+    color:  #A5B68D;;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.toggle:hover {
+    color: var(--button-hover);
+    text-decoration: underline;
+}
+
+/* 📌 Authentication Message */
+.login-message {
+    margin-top: 12px;
+    font-weight: 500;
+    color: var(--danger-color);
+}
+
+/* 📌 Wallet Balance Display */
+.wallet {
+    margin-top: 12px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* 📌 Responsive Design */
+@media (max-width: 450px) {
+    .login-box {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
             `}</style>
         </div>
     );

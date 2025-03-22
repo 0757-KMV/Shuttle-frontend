@@ -20,18 +20,16 @@ body {
 
 /* 🔹 Routes Container */
 .routes-container {
-  max-width: 100%;
-  width: 100%;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* margin: 0 auto; */
-  /* padding: 30px; */
-  background: var(--card-bg);
-  border-radius: 12px;
+  background: #333;
   box-shadow: 0 5px 10px var(--shadow-color);
-  border: 1px solid var(--border-color);
+}
+.routes-container {
+  overflow: visible; /* Ensures no hidden elements */
 }
 
 /* 🔹 Title */
@@ -78,20 +76,30 @@ body {
 
 /* 🔹 Button */
 .routes-button {
+  display: block; /* Ensures the button takes up available space */
+  width: 100%; /* Matches input fields width */
+  text-align: center;
   background-color: var(--primary-color);
-  color: #fff;
-  padding: 14px;
+  color: #ffffff;
+  padding: 14px 16px;
   font-size: 16px;
   font-weight: bold;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
+  margin-top: 10px; /* Adds spacing from input fields */
 }
 
 .routes-button:hover {
   background-color: #0056b3;
+  transform: scale(1.05); /* Subtle hover effect */
 }
+
+.routes-button:active {
+  transform: scale(0.98);
+}
+
 
 /* 🔹 Routes List */
 .routes-list {
@@ -235,12 +243,10 @@ body {
 
 /* 🔹 Navigation Bar */
 .routes-nav {
-  background: #333;
+  /* background: #333; */
   width: 100%;
   padding: 12px 0;
   text-align: center;
-  border-radius: 8px;
-  margin-bottom: 20px;
 }
 
 .routes-nav ul {
